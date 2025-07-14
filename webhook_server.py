@@ -109,13 +109,13 @@ def webhook():
                 'record_type': record_type,
                 'values': values
             }
-            # Log parsed fields as a list
-logger.info('Parsed event:')
-logger.info('  device_uuid: %s', device_uuid)
-logger.info('  timestamp: %s', timestamp.isoformat() + 'Z')
-logger.info('  record_type: %s', record_type)
-for key, val in values.items():
-    logger.info('  %s: %s', key, val)
+                        # Log parsed fields as a list
+            logger.info('Parsed event:')
+            logger.info('  device_uuid: %s', device_uuid)
+            logger.info('  timestamp: %s', timestamp.isoformat() + 'Z')
+            logger.info('  record_type: %s', record_type)
+            for key, val in values.items():
+                logger.info('  %s: %s', key, val)
 
             # Persist to database
             rec = DeviceData(
