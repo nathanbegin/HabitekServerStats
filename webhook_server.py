@@ -228,7 +228,15 @@ app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 db = SQLAlchemy(app)
 socketio = SocketIO(app, cors_allowed_origins='*') # Note: socketio already has cors_allowed_origins
 
-# ... (rest of your existing code) ...
+# Model to store sensor or camera data
+class DeviceData(db.Model):
+    __tablename__ = 'device_data'
+    id = db.Column(db.Integer, primary_key=True)
+    device_uuid = db.Column(db.String(64), nullable=False)
+    timestamp = db.Column(db.DateTime, nullable=False)
+    record_type = db.Column(db.String(32), nullable=False)
+    data = db.Column(db.JSON, nullable=False)
+
 
 # Ensure database tables exist (ignore insufficient privileges)
 with app.app_context():
