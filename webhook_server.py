@@ -357,5 +357,5 @@ if __name__ == '__main__':
     # In a production environment, use a proper WSGI server like Gunicorn
     # and integrate with a reverse proxy like Nginx for HTTPS.
     # For development, you can run it directly:
-    # app.run(debug=True, host='0.0.0.0', port=5000)
-    socketio.run(app, host='0.0.0.0', port=4344, debug=True) # Run with Socket.IO's development server
+    app.run(debug=True, host='0.0.0.0', port=4567)
+    socketio.run(app, host='0.0.0.0', port=4567, debug=True) # Run with Socket.IO's development server
