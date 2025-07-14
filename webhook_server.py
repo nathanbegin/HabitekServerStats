@@ -128,6 +128,7 @@ def webhook():
             inserted += 1
 
             # Emit real-time update
+            logger.info("Emitting new_data to clients: %s", log_entry)
             socketio.emit('new_data', log_entry)
         except Exception as e:
             logger.exception('Error processing event: %s', e)
