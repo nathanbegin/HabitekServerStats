@@ -190,7 +190,8 @@
 #     port = int(os.getenv('PORT', 4567))
 #     logger.info('Starting server on port %d', port)
 #     socketio.run(app, host='0.0.0.0', port=port)
-
+import eventlet
+eventlet.monkey_patch()
 
 import os
 import json
@@ -226,7 +227,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 
 db = SQLAlchemy(app)
-socketio = SocketIO(app, cors_allowed_origins='*') # Note: socketio already has cors_allowed_origins
+socketio = SocketIO(app, cors_allowed_origins='*', async_mode='eventlet') # Note: socketio already has cors_allowed_origins
 
 # Model to store sensor or camera data
 class DeviceData(db.Model):
