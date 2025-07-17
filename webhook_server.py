@@ -388,7 +388,7 @@ def get_latest():
 def get_history():
     try:
         # ... (keep limit for safety, or make it optional)
-        limit = min(request.args.get('limit', 100, type=int), 1000)
+        limit = min(request.args.get('limit', 100, type=int), 100000)
 
         start_ts_str = request.args.get('start_timestamp')
         end_ts_str = request.args.get('end_timestamp')
