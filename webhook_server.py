@@ -366,11 +366,44 @@ def get_latest():
         logger.exception('Latest API error: %s', e)
         abort(500)
 
+# @app.route('/api/history', methods=['GET'])
+# def get_history():
+#     try:
+#         limit = min(request.args.get('limit', 100, type=int), 1000)
+#         recs = DeviceData.query.order_by(DeviceData.timestamp.desc()).limit(limit).all()
+#         items = []
+#         for r in recs:
+#             items.append({
+#                 'device_uuid': r.device_uuid,
+#                 'timestamp': r.timestamp.isoformat() + 'Z',
+#                 'record_type': r.record_type,
+#                 'data': r.data
+#             })
+#         return pretty_response(items)
+#     except Exception as e:
+#         logger.exception('History API error: %s', e)
+#         abort(500)
+
 @app.route('/api/history', methods=['GET'])
 def get_history():
     try:
+        # ... (keep limit for safety, or make it optional)
         limit = min(request.args.get('limit', 100, type=int), 1000)
-        recs = DeviceData.query.order_by(DeviceData.timestamp.desc()).limit(limit).all()
+
+        start_ts_str = request.args.get('start_timestamp')
+        end_ts_str = request.args.get('end_timestamp')
+
+        query = DeviceData.query.order_by(DeviceData.timestamp.desc())
+
+        if start_ts_str:
+            start_ts = datetime.fromisoformat(start_ts_str.replace('Z', '+00:00'))
+            query = query.filter(DeviceData.timestamp >= start_ts)
+        if end_ts_str:
+            end_ts = datetime.fromisoformat(end_ts_str.replace('Z', '+00:00'))
+            query = query.filter(DeviceData.timestamp <= end_ts)
+
+        recs = query.limit(limit).all() # Apply limit after filtering by time
+        # ... (rest of your code to format items and return)
         items = []
         for r in recs:
             items.append({
@@ -379,10 +412,15 @@ def get_history():
                 'record_type': r.record_type,
                 'data': r.data
             })
+        # Note: You might want to sort these 'items' ascending before returning,
+        # or handle sorting entirely on the frontend after receiving them.
         return pretty_response(items)
+
     except Exception as e:
         logger.exception('History API error: %s', e)
         abort(500)
+
+
 
 if __name__ == '__main__':
     port = int(os.getenv('PORT', 4567))
