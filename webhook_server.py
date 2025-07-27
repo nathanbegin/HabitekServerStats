@@ -408,8 +408,8 @@ def get_history():
         for r in recs:
             items.append({
                 'device_uuid': r.device_uuid,
-                # 'timestamp': r.timestamp.isoformat() + 'Z',
-                'timestamp': r.timestamp.isoformat(),
+                'timestamp': r.timestamp.isoformat() + 'Z',
+                #'timestamp': r.timestamp.isoformat(),
                 'record_type': r.record_type,
                 'data': r.data
             })
