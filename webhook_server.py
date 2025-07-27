@@ -221,8 +221,13 @@ def get_history():
             end_ts = datetime.fromisoformat(end_ts_str.replace('Z', '+00:00'))
             query = query.filter(DeviceData.timestamp <= end_ts)
         # Si un end_timestamp n'est pas fourni, utiliser l'heure actuelle en UTC
-        else:
+        else:           
             end_ts = datetime.now(timezone.utc)
+            print(f"Timestamp value from else end: {end_ts}") # Ligne de débogage
+            
+            query = query.filter(DeviceData.timestamp <= end_ts)
+            
+
         
         # Si un start_timestamp est fourni, l'utiliser
         if start_ts_str:
@@ -232,13 +237,9 @@ def get_history():
         else:
             # Calculer le temps 24 heures plus tôt en UTC
             start_ts = end_ts - timedelta(hours=24)
+            print(f"Timestamp value from else start: {start_ts}") # Ligne de débogage
+
             query = query.filter(DeviceData.timestamp >= start_ts)
-
-
-
-
-
-
 
 
         recs = query.limit(limit).all() # Apply limit after filtering by time
