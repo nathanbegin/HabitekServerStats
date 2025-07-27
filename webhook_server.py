@@ -414,6 +414,7 @@ def get_history():
                 'device_uuid': r.device_uuid,
                 #'timestamp': r.timestamp.isoformat() + 'Z',
                 'timestamp': r.timestamp.isoformat(), # Modifié
+                print(f"Timestamp value after operation: {r.timestamp.isoformat()}") # Ligne de débogage
                 #'timestamp': r.timestamp.isoformat(),
                 'record_type': r.record_type,
                 'data': r.data
