@@ -202,9 +202,9 @@ def get_history():
         limit = min(request.args.get('limit', 100, type=int), 100000)
 
         start_ts_str = request.args.get('start_timestamp')
-        print(f"Timestamp value from start_timestamp: {start_ts_str}") # Ligne de débogage
+        #print(f"Timestamp value from start_timestamp: {start_ts_str}") # Ligne de débogage
         end_ts_str = request.args.get('end_timestamp')
-        print(f"Timestamp value from end_timestamp: {end_ts_str}") # Ligne de débogage
+        #print(f"Timestamp value from end_timestamp: {end_ts_str}") # Ligne de débogage
 
         # Démarrer la requête par ordre de timestamp décroissant
         query = DeviceData.query.order_by(DeviceData.timestamp.desc())
@@ -223,8 +223,8 @@ def get_history():
         # Si un end_timestamp n'est pas fourni, utiliser l'heure actuelle en UTC
         else:           
             end_ts = datetime.now(timezone.utc)
-            print(f"Timestamp value from else end: {end_ts}") # Ligne de débogage
-            
+            #print(f"Timestamp value from else end: {end_ts}") # Ligne de débogage
+
             query = query.filter(DeviceData.timestamp <= end_ts)
             
 
@@ -237,7 +237,7 @@ def get_history():
         else:
             # Calculer le temps 24 heures plus tôt en UTC
             start_ts = end_ts - timedelta(hours=24)
-            print(f"Timestamp value from else start: {start_ts}") # Ligne de débogage
+            #print(f"Timestamp value from else start: {start_ts}") # Ligne de débogage
 
             query = query.filter(DeviceData.timestamp >= start_ts)
 
@@ -246,8 +246,8 @@ def get_history():
         # ... (rest of your code to format items and return)
         items = []
         for r in recs:
-            print(f"Timestamp value from database: {r.timestamp}") # Ligne de débogage
-            print(f"Timestamp value after operation: {r.timestamp.isoformat()}")
+            #print(f"Timestamp value from database: {r.timestamp}") # Ligne de débogage
+            #print(f"Timestamp value after operation: {r.timestamp.isoformat()}")
             items.append({
                 'device_uuid': r.device_uuid,
                 #'timestamp': r.timestamp.isoformat() + 'Z',
