@@ -394,7 +394,9 @@ def get_history():
         limit = min(request.args.get('limit', 100, type=int), 100000)
 
         start_ts_str = request.args.get('start_timestamp')
+        print(f"Timestamp value from start_timestamp: {start_ts_str}") # Ligne de débogage
         end_ts_str = request.args.get('end_timestamp')
+        print(f"Timestamp value from end_timestamp: {end_ts_str}") # Ligne de débogage
 
         query = DeviceData.query.order_by(DeviceData.timestamp.desc())
 
