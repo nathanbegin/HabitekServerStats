@@ -196,7 +196,7 @@ eventlet.monkey_patch()
 import os
 import json
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 from flask import Flask, request, jsonify, abort, make_response
 from flask_sqlalchemy import SQLAlchemy
 from flask_socketio import SocketIO
@@ -289,7 +289,8 @@ def webhook():
                 continue
 
             ts_ms = data.get('ts') or (evt.get('eventCreatedTime', 0) * 1000)
-            timestamp = datetime.utcfromtimestamp(ts_ms / 1000)
+            # timestamp = datetime.utcfromtimestamp(ts_ms / 1000)
+            timestamp = datetime.fromtimestamp(ts_ms / 1000, tz=timezone.utc)
 
             section = data.get('payload', {}) or {}
             values = section.get('values', section)
@@ -303,7 +304,8 @@ def webhook():
 
             log_entry = {
                 'device_uuid': device_uuid,
-                'timestamp': timestamp.isoformat() + 'Z',
+                #'timestamp': timestamp.isoformat() + 'Z',
+                'timestamp': timestamp.isoformat(), # Modifié
                 'record_type': record_type,
                 'values': values
             }
@@ -357,7 +359,8 @@ def get_latest():
             abort(404)
         result = {
             'device_uuid': rec.device_uuid,
-            'timestamp': rec.timestamp.isoformat() + 'Z',
+            #'timestamp': rec.timestamp.isoformat() + 'Z',
+            'timestamp': rec.timestamp.isoformat(), # Modifié
             'record_type': rec.record_type,
             'data': rec.data
         }
@@ -408,7 +411,8 @@ def get_history():
         for r in recs:
             items.append({
                 'device_uuid': r.device_uuid,
-                'timestamp': r.timestamp.isoformat() + 'Z',
+                #'timestamp': r.timestamp.isoformat() + 'Z',
+                'timestamp': r.timestamp.isoformat(), # Modifié
                 #'timestamp': r.timestamp.isoformat(),
                 'record_type': r.record_type,
                 'data': r.data
