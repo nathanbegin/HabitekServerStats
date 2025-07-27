@@ -409,6 +409,7 @@ def get_history():
         # ... (rest of your code to format items and return)
         items = []
         for r in recs:
+            print(f"Timestamp value from database: {r.timestamp}") # Ligne de débogage
             items.append({
                 'device_uuid': r.device_uuid,
                 #'timestamp': r.timestamp.isoformat() + 'Z',
